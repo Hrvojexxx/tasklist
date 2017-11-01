@@ -10,10 +10,14 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+use App\Task;
 
 //prikaz svih taskova u bazi
 Route::get('/', function () {
-    return view('tasks');
+    //return view('tasks');
+	$tasks = Task::orderBy('created_at', 'asc')->get(); //vraća objekt, a get vraća podatke
+	
+	return view('tasks', [ 'tasks' => $tasks ]);
 });
 
 //Dodavanje novog taska
@@ -31,7 +35,7 @@ Route::post('/task', function (Request $request) {
 	$task->name = $request->name;
 	$task->save();
 	
-	return rdirect('/');
+	return redirect('/');
 });
 
 //Brisanje postojećeg taska
